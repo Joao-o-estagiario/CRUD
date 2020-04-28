@@ -1,0 +1,15 @@
+<h1>Posts</h1>
+
+<?php foreach($posts as $post): ?>
+
+<h3>
+  <a href="#">
+    <?= $this->escapeHtml($post->getTitle()); ?>
+  </a>    
+</h3>
+        
+<p>    
+   <?= $this->escapeHtml($post->getConten()); ?>
+</p>
+
+<?php endforeach; ?>
