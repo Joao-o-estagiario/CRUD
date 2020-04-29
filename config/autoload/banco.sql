@@ -29,4 +29,4 @@ CREATE TABLE tag
 (
   id serial,
   name varchar(128)
-)
+);

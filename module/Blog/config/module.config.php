@@ -14,6 +14,8 @@ return [
         'factories' => [
             Controller\BlogController::class => 
                 Factories\BlogControllerFactory::class,
+                Controller\BlogController::class => 
+                           Controller\Factory\PostControllerFactory::class,
         ],
     ],
     'router' => [
@@ -25,6 +27,20 @@ return [
                     'defaults' => [
                         'controller' => Controller\BlogController::class,
                         'action'     => 'index',
+                    ],
+                ],
+            ],
+            'posts' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/posts[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]*'
+                    ],
+                    'defaults' => [
+                        'controller'    => Controller\BlogController::class,
+                        'action'        => 'index',
                     ],
                 ],
             ],
@@ -47,6 +63,12 @@ return [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 ],
             ],
+        ],
+    ],
+    'service_manager' => [
+        //...
+        'factories' => [
+            Service\PostManager::class => Service\Factory\PostManagerFactory::class,
         ],
     ],
     // Add the Doctrine integration modules.
