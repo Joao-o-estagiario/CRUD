@@ -40,7 +40,7 @@ return [
                     ],
                     'defaults' => [
                         'controller'    => Controller\BlogController::class,
-                        'action'        => 'index',
+                        'action'        => 'add',
                     ],
                 ],
             ],
