@@ -52,7 +52,7 @@ class Tag
     public function getName(){
         return $this->name;
     }
-    public function SetName($name){
+    public function setName($name){
         $this->name = $name;
     }
 }

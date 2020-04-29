@@ -6,10 +6,7 @@ use Zend\ServiceManager\Factory\FactoryInterface;
 use Blog\Service\PostManager;
 use Blog\Controller\BlogController;
 
-/**
- * This is the factory for PostController. Its purpose is to instantiate the
- * controller.
- */
+
 class PostControllerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, 

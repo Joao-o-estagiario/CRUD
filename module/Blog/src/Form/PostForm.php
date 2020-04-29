@@ -6,33 +6,25 @@ use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 use Blog\Entity\Post;
 
-/**
- * This form is used to collect post data.
- */
+
 class PostForm extends Form
 {
-    /**
-     * Constructor.     
-     */
+
     public function __construct()
     {
-        // Define form name
+
         parent::__construct('post-form');
      
-        // Set POST method for this form
+
         $this->setAttribute('method', 'post');
                 
         $this->addElements();
         $this->addInputFilter();         
     }
     
-    /**
-     * This method adds elements to form (input fields and submit button).
-     */
     protected function addElements() 
     {
                 
-        // Add "title" field
         $this->add([           
             'type'  => 'text',
             'name' => 'title',
@@ -44,7 +36,6 @@ class PostForm extends Form
             ],
         ]);
         
-        // Add "conten" field
         $this->add([
             'type'  => 'textarea',
             'name' => 'conten',
@@ -56,7 +47,6 @@ class PostForm extends Form
             ],
         ]);
         
-        // Add "tags" field
         $this->add([
             'type'  => 'text',
             'name' => 'tags',
@@ -68,7 +58,6 @@ class PostForm extends Form
             ],
         ]);
         
-        // Add "status" field
         $this->add([
             'type'  => 'select',
             'name' => 'status',
@@ -84,20 +73,16 @@ class PostForm extends Form
             ],
         ]);
         
-        // Add the submit button
         $this->add([
             'type'  => 'submit',
             'name' => 'submit',
             'attributes' => [                
-                'value' => 'Create',
+                'value' => 'Registrar',
                 'id' => 'submitbutton',
             ],
         ]);
     }
     
-    /**
-     * This method creates input filter (used for form filtering/validation).
-     */
     private function addInputFilter() 
     {
         
