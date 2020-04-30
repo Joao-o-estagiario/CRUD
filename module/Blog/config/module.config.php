@@ -44,6 +44,20 @@ return [
                     ],
                 ],
             ],
+            'post' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/post[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]*'
+                    ],
+                    'defaults' => [
+                        'controller'    => Controller\BlogController::class,
+                        'action'        => 'admin',
+                    ],
+                ],
+            ],
         ],
     ],
     'view_manager' => [

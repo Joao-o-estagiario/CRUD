@@ -90,7 +90,7 @@ class Post
     }
 
     //remove a associação que esse post tinha com a tag
-    public function removeTagAssossiation($tag){
+    public function removeTagAssociation($tag){
         $this->tags->removeElement($tag);
     }
 
