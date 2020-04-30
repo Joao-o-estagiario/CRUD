@@ -1,9 +1,9 @@
-<h1>Manage Posts</h1>
+<h1>Gerencie seus Registros</h1>
 
 <p>
 <a class="btn btn-default" href="
     <?= $this->url('posts', ['action'=>'add']); ?>">
-    New Post
+    Novo Registro
 </a>
 </p>
 
@@ -11,10 +11,10 @@
 
    <tr>
         <th>ID</th>
-        <th>Post Title</th>
-        <th>Date Created</th>
+        <th>Titulo</th>
+        <th>Criação</th>
         <th>Status</th>        
-        <th>Actions</th>        
+        <th>Gerenciar</th>        
     </tr>
     
     <?php foreach ($posts as $post): ?>
@@ -31,11 +31,11 @@
         <td>
             <a class="btn btn-info" href="<?= $this->url('posts', 
                     ['action'=>'edit', 'id'=>$post->getId()]); ?>">
-                <span class="glyphicon glyphicon-pencil" ></span> Edit
+                <span class="glyphicon glyphicon-pencil" ></span> Editar
             </a>
             <a class="btn btn-danger" href="<?= $this->url('posts',
                     ['action'=>'delete', 'id'=>$post->getId()]); ?>">
-                <span class="glyphicon glyphicon-remove"></span> Delete
+                <span class="glyphicon glyphicon-remove"></span> Deletar
             </a>
         </td>    
     </tr>

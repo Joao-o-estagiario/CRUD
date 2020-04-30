@@ -25,12 +25,12 @@ $form->prepare();
 <p class="comments-header">
     <?= $this->escapeHtml($postManager->getCommentCountStr($post)); ?> | 
     <a href="#comment">
-        Add new comment
+        Adicione um novo Registro
     </a>
 </p>
 
 <p>
-    Published: <?= $this->escapeHtml(date('jS \of F Y', strtotime($post->getDateCreated()))); ?> 
+    Publicado: <?= $this->escapeHtml(date('jS \of F Y', strtotime($post->getDateCreated()))); ?> 
     | Tags: <?= $this->escapeHtml($postManager->convertTagsToString($post)); ?>   
 </p>
 
@@ -58,7 +58,7 @@ $form->prepare();
 <hr>
 
 <a name="comment"></a>
-<h3>Leave Reply</h3>
+<h3>Deixar resposta</h3>
 
 <div class="row">
     <div class="col-md-8">
