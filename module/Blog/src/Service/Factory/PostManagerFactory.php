@@ -5,10 +5,7 @@ use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Blog\Service\PostManager;
 
-/**
- * This is the factory for PostManager. Its purpose is to instantiate the
- * service.
- */
+
 class PostManagerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, 
@@ -16,7 +13,6 @@ class PostManagerFactory implements FactoryInterface
     {
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
         
-        // Instantiate the service and inject dependencies
         return new PostManager($entityManager);
     }
 }

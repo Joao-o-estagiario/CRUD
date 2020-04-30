@@ -12,165 +12,163 @@ use Blog\Form\CommentForm;
 
 class BlogController extends AbstractActionController
 {
-    /**
-     * Entity manager.
-     * @var Doctrine\ORM\EntityManager 
-     */
-    private $entityManager;
-    
-    /**
-     * Post manager.
-     * @var Blog\Service\PostManager 
-     */
-    private $postManager;
-    
-    public function __construct($entityManager, $postManager){
-        $this->entityManager = $entityManager;
-        $this->postManager = $postManager;
-    }
+  /**
+   * Entity manager.
+   * @var Doctrine\ORM\EntityManager 
+   */
+  private $entityManager;
 
-    public function indexAction()
-    {
-        $posts = $this->entityManager->getRepository(Post::class)
-                        ->findBy(['status'=>Post::STATUS_PUBLISHED],
-                                 ['dateCreated'=>'DESC']);
-        return new ViewModel([
-            'posts' => $posts
-        ]);
-    }
-    
-    public function addAction() 
-    {     
-        $form = new PostForm();
-        
-        if ($this->getRequest()->getMethod() == Request::METHOD_POST) {
-            
-            $data = $this->params()->fromPost();
-            
-            $form->setData($data);
-            if ($form->isValid()) {
-                                
-                $data = $form->getData();
-                               
-                $this->postManager->addNewPost($data);
-                
-                return $this->redirect()->toRoute('blog');
-            }
-        }
-        
-        return new ViewModel([
-            'form' => $form
-        ]);
-    }
-    
-    public function editAction() 
+  /**
+   * Post manager.
+   * @var Blog\Service\PostManager 
+   */
+  private $postManager;
+
+  public function __construct($entityManager, $postManager)
   {
-    // Create the form.
+    $this->entityManager = $entityManager;
+    $this->postManager = $postManager;
+  }
+
+  public function indexAction()
+  {
+    $posts = $this->entityManager->getRepository(Post::class)
+      ->findBy(
+        ['status' => Post::STATUS_PUBLISHED],
+        ['dateCreated' => 'DESC']
+      );
+    return new ViewModel([
+      'posts' => $posts
+    ]);
+  }
+
+  public function addAction()
+  {
     $form = new PostForm();
-    
-    // Get post ID.    
-    $postId = $this->params()->fromRoute('id', -1);
-    
-    // Find existing post in the database.    
-    $post = $this->entityManager->getRepository(Post::class)
-                ->findOneById($postId);        
-    if ($post == null) {
-      $this->getResponse()->setStatusCode(404);
-      return;                        
-    } 
-        
-    // Check whether this post is a POST request.
+
     if ($this->getRequest()->getMethod() == Request::METHOD_POST) {
-            
-      // Get POST data.
+
       $data = $this->params()->fromPost();
-            
-      // Fill form with data.
+
       $form->setData($data);
       if ($form->isValid()) {
-                                
-        // Get validated form data.
+
         $data = $form->getData();
-                
-        // Use post manager service to add new post to database.                
+
+        $this->postManager->addNewPost($data);
+
+        return $this->redirect()->toRoute('blog');
+      }
+    }
+
+    return new ViewModel([
+      'form' => $form
+    ]);
+  }
+
+  public function editAction()
+  {
+    //cria o form
+    $form = new PostForm();
+
+    //captura o id    
+    $postId = $this->params()->fromRoute('id', -1);
+
+    //encontra o registro na db    
+    $post = $this->entityManager->getRepository(Post::class)
+      ->findOneById($postId);
+    if ($post == null) {
+      $this->getResponse()->setStatusCode(404);
+      return;
+    }
+
+    //é enviado por post?
+    if ($this->getRequest()->getMethod() == Request::METHOD_POST) {
+
+      $data = $this->params()->fromPost();
+
+      $form->setData($data);
+      if ($form->isValid()) {
+
+        $data = $form->getData();
+
+        //usa postManager para adicionar um novo registro (não insere até o flush)                
         $this->postManager->updatePost($post, $data);
-                
-        // Redirect the user to "admin" page.
-        return $this->redirect()->toRoute('posts', ['action'=>'admin']);
+
+        //redireciona para a page admin
+        return $this->redirect()->toRoute('posts', ['action' => 'admin']);
       }
     } else {
       $data = [
-               'title' => $post->getTitle(),
-               'conten' => $post->getConten(),
-               'tags' => $this->postManager->convertTagsToString($post),
-               'status' => $post->getStatus()
-            ];
-            
+        'title' => $post->getTitle(),
+        'conten' => $post->getConten(),
+        'tags' => $this->postManager->convertTagsToString($post),
+        'status' => $post->getStatus()
+      ];
+
       $form->setData($data);
     }
-        
-    // Render the view template.
+
     return new ViewModel([
-            'form' => $form,
-            'post' => $post
-        ]);  
+      'form' => $form,
+      'post' => $post
+    ]);
   }
 
   public function deleteAction()
   {
     $postId = $this->params()->fromRoute('id', -1);
-        
+
     $post = $this->entityManager->getRepository(Post::class)
-                ->findOneById($postId);        
+      ->findOneById($postId);
     if ($post == null) {
       $this->getResponse()->setStatusCode(404);
-      return;                        
-    }        
-        
+      return;
+    }
+
     $this->postManager->removePost($post);
-        
-    // Redirect the user to "index" page.
-    return $this->redirect()->toRoute('posts', ['action'=>'admin']);
+
+    return $this->redirect()->toRoute('posts', ['action' => 'admin']);
   }
 
-  public function viewAction() 
-  {       
+  public function viewAction()
+  {
     $postId = $this->params()->fromRoute('id', -1);
-        
+
     $post = $this->entityManager->getRepository(Post::class)
-              ->findOneById($postId);
-        
+      ->findOneById($postId);
+
     if ($post == null) {
       $this->getResponse()->setStatusCode(404);
-      return;                        
-    }        
-        
+      return;
+    }
+
     $commentCount = $this->postManager->getCommentCountStr($post);
-        
+
     // Create the form.
     $form = new CommentForm();
-        
+
     // Check whether this post is a POST request.
-    if($this->getRequest()->getMethod() == Request::METHOD_POST) {
-            
+    if ($this->getRequest()->getMethod() == Request::METHOD_POST) {
+
       // Get POST data.
       $data = $this->params()->fromPost();
-            
+
       // Fill form with data.
       $form->setData($data);
-      if($form->isValid()) {
-                                
+      if ($form->isValid()) {
+
         // Get validated form data.
         $data = $form->getData();
-              
+
         // Use post manager service to add new comment to post.
         $this->postManager->addCommentToPost($post, $data);
-                
+
         // Redirect the user again to "view" page.
-        return $this->redirect()->toRoute('posts', ['action'=>'view', 'id'=>$postId]);
+        return $this->redirect()->toRoute('posts', ['action' => 'view', 'id' => $postId]);
       }
     }
-        
+
     // Render the view template.
     return new ViewModel([
       'post' => $post,
@@ -179,16 +177,16 @@ class BlogController extends AbstractActionController
       'postManager' => $this->postManager
     ]);
   }
-  
+
   public function adminAction()
   {
     //captura os posts
     $posts = $this->entityManager->getRepository(Post::class)
-               ->findBy([], ['dateCreated'=>'DESC']);
-        
+      ->findBy([], ['dateCreated' => 'DESC']);
+
     return new ViewModel([
-            'posts' => $posts,
-            'postManager' => $this->postManager
-        ]);        
+      'posts' => $posts,
+      'postManager' => $this->postManager
+    ]);
   }
 }

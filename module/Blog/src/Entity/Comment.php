@@ -10,9 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Comment
 {
     /**
-     * @ORM\Entity
-     * @ORM\Column(name="id")
+     * @ORM\Id
      * @ORM\GeneratedValue
+     * @ORM\Column(name="id")
      */
     protected $id;
 
