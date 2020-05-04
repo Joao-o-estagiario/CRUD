@@ -2,16 +2,16 @@
 $form = $this->form;
 $form->get('title')->setAttributes([
     'class'=>'form-control', 
-    'placeholder'=>'Enter post title here'
+    'placeholder'=>'Título da postagem'
     ]);
 $form->get('conten')->setAttributes([
     'class'=>'form-control', 
-    'placeholder'=>'Type content here',
+    'placeholder'=>'Mensagem',
     'rows'=>6
     ]);
 $form->get('tags')->setAttributes([
     'class'=>'form-control', 
-    'placeholder'=>'comma, separated, list, of, tags'
+    'placeholder'=>'lista, de, tags, separada, por, vígula'
     ]);
 $form->get('status')->setAttributes([
     'class'=>'form-control'   
@@ -22,7 +22,7 @@ $form->prepare();
 
 ?>
 
-<h1>Edição de REgistros</h1>
+<h1>Edição de Registros</h1>
 
 <p>
     Registros em modo de edição. Não esqueça de salva-los.
@@ -48,7 +48,7 @@ $form->prepare();
             <?= $this->formLabel($form->get('tags')); ?>
             <?= $this->formElement($form->get('tags')); ?>
             <?= $this->formElementErrors($form->get('tags')); ?>                  
-            <p class="help-block">Separate tags with comma.</p>
+            <p class="help-block">Tags separadas por vírgula.</p>
         </div>
 
         <div class="form-group">
