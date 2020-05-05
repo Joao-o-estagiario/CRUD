@@ -26,7 +26,7 @@ return [
                     'route'    => '/blog[/:action]',
                     'defaults' => [
                         'controller' => Controller\BlogController::class,
-                        'action'     => 'index',
+                        'action'     => 'admin',
                     ],
                 ],
             ],

@@ -21,14 +21,16 @@ $form->prepare();
 
 ?>
 
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js%22%3E"></script>
+
 <h1>Novo Registro</h1>
 
 <p>
     Preencha o formulário e clique em  <i>Registrar</i> .
 </p>
 
-<div class="row">
-    <div class="col-md-6">
+<div class="row" ng-app=''>
+    <div class="col-md-6" ng-controller='myForm'>
         <?= $this->form()->openTag($form); ?>
         
         <div class="form-group">

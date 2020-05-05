@@ -33,38 +33,38 @@ class BlogController extends AbstractActionController
     $this->postManager = $postManager;
   }
 
-  public function indexAction() 
-    {
-        $page = $this->params()->fromQuery('page', 1);
-        $tagFilter = $this->params()->fromQuery('tag', null);
+  // public function indexAction() 
+  //   {
+  //       $page = $this->params()->fromQuery('page', 1);
+  //       $tagFilter = $this->params()->fromQuery('tag', null);
         
-        if ($tagFilter) {
+  //       if ($tagFilter) {
          
-            // Filter posts by tag
-            $query = $this->entityManager->getRepository(Post::class)
-                    ->findPostsByTag($tagFilter);
+  //           // Filter posts by tag
+  //           $query = $this->entityManager->getRepository(Post::class)
+  //                   ->findPostsByTag($tagFilter);
             
-        } else {
-            // Get recent posts
-            $query = $this->entityManager->getRepository(Post::class)
-                    ->findPublishedPosts();
-        }
+  //       } else {
+  //           // Get recent posts
+  //           $query = $this->entityManager->getRepository(Post::class)
+  //                   ->findPublishedPosts();
+  //       }
         
-        $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
-        $paginator = new Paginator($adapter);
-        $paginator->setDefaultItemCountPerPage(1);        
-        $paginator->setCurrentPageNumber($page);
+  //       $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
+  //       $paginator = new Paginator($adapter);
+  //       $paginator->setDefaultItemCountPerPage(1);        
+  //       $paginator->setCurrentPageNumber($page);
                        
-        // Get popular tags.
-        $tagCloud = $this->postManager->getTagCloud();
+  //       // Get popular tags.
+  //       $tagCloud = $this->postManager->getTagCloud();
         
-        // Render the view template.
-        return new ViewModel([
-            'posts' => $paginator,
-            'postManager' => $this->postManager,
-            'tagCloud' => $tagCloud
-        ]);
-    }
+  //       // Render the view template.
+  //       return new ViewModel([
+  //           'posts' => $paginator,
+  //           'postManager' => $this->postManager,
+  //           'tagCloud' => $tagCloud
+  //       ]);
+  //   }
 
   public function addAction()
   {
