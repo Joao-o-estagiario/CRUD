@@ -8,6 +8,9 @@ use Zend\Http\Request;
 use Blog\Entity\Post;
 use Blog\Form\PostForm;
 use Blog\Form\CommentForm;
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
+use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
+use Zend\Paginator\Paginator;
 
 
 class BlogController extends AbstractActionController
@@ -30,17 +33,38 @@ class BlogController extends AbstractActionController
     $this->postManager = $postManager;
   }
 
-  public function indexAction()
-  {
-    $posts = $this->entityManager->getRepository(Post::class)
-      ->findBy(
-        ['status' => Post::STATUS_PUBLISHED],
-        ['dateCreated' => 'DESC']
-      );
-    return new ViewModel([
-      'posts' => $posts
-    ]);
-  }
+  public function indexAction() 
+    {
+        $page = $this->params()->fromQuery('page', 1);
+        $tagFilter = $this->params()->fromQuery('tag', null);
+        
+        if ($tagFilter) {
+         
+            // Filter posts by tag
+            $query = $this->entityManager->getRepository(Post::class)
+                    ->findPostsByTag($tagFilter);
+            
+        } else {
+            // Get recent posts
+            $query = $this->entityManager->getRepository(Post::class)
+                    ->findPublishedPosts();
+        }
+        
+        $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
+        $paginator = new Paginator($adapter);
+        $paginator->setDefaultItemCountPerPage(1);        
+        $paginator->setCurrentPageNumber($page);
+                       
+        // Get popular tags.
+        $tagCloud = $this->postManager->getTagCloud();
+        
+        // Render the view template.
+        return new ViewModel([
+            'posts' => $paginator,
+            'postManager' => $this->postManager,
+            'tagCloud' => $tagCloud
+        ]);
+    }
 
   public function addAction()
   {

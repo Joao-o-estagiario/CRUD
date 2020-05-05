@@ -25,7 +25,7 @@ class PostRepository extends EntityRepository
     }
 
     //agora ele procura uma tag específica
-    public function findTag($tagName){
+    public function findPostByTag($tagName){
         $entityManager = $this->getEntityManager();
 
         $queryBuilder = $entityManager->createQueryBuilder();
@@ -33,15 +33,29 @@ class PostRepository extends EntityRepository
         $queryBuilder->select('p')
            ->from(Post::class, 'p')
            ->join('p.tags', 't')
-           ->where('p.status', ':status')
-           ->andWhere('p.name', ':ptags')
+           ->where('p.status = :status')
+           ->andWhere('p.name = :ptags')
            ->orderBy('p.dateCreated', 'DESC')
            ->setParameter(':status', Post::STATUS_PUBLISHED)
            ->setParameter(':ptags', $tagName);
 
-        $posts = $queryBuilder->getQuery()->getResult();
+        return $queryBuilder->getQuery();;
+    }
 
-        return $posts;
+    //acha posagens com status "publicada"
+    public function findPublishedPosts()
+    {
+        $entityManager = $this->getEntityManager();
+    
+        $queryBuilder = $entityManager->createQueryBuilder();
+    
+        $queryBuilder->select('p')
+           ->from(Post::class, 'p')
+           ->where('p.status = :posts')
+           ->orderBy('p.dateCreated', 'DESC')
+           ->setParameter('posts', Post::STATUS_PUBLISHED);
+    
+        return $queryBuilder->getQuery();
     }
 
 }
