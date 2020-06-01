@@ -11,7 +11,7 @@ use Blog\Form\CommentForm;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Zend\Paginator\Paginator;
-
+use Zend\View\Model\JsonModel;
 
 class BlogController extends AbstractActionController
 {
@@ -212,5 +212,22 @@ class BlogController extends AbstractActionController
       'posts' => $posts,
       'postManager' => $this->postManager
     ]);
+  }
+
+  public function restAdminAction() {
+    $posts = $this->entityManager->getRepository(Post::class)
+    ->findBy([], ['dateCreated' => 'DESC']);
+
+    $retorno = array_map(function($post){return $post->toArray();},$posts);
+
+  /*  $retorno = array_map(fn($post) => $post->toArray(),$posts);
+
+
+    $retorno = [];
+    foreach ($posts as $post) {
+      $retorno[] = $post->toArray();
+    } */
+
+    return new JsonModel($retorno);
   }
 }

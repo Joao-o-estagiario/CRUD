@@ -3,6 +3,7 @@ namespace Blog\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Zend\Hydrator\ClassMethods;
 
 /**
  * @ORM\Entity(repositoryClass="\Blog\Repository\PostRepository")
@@ -128,5 +129,14 @@ class Post
     }
     public function setDateCreated($dateCreated){
         $this->dateCreated = $dateCreated;
+    }
+
+    public function toArray() : array
+    {
+        return [
+            'id' => $this->getId(),
+            'title' => $this->getTitle(),
+            'conten' => $this->getConten()
+        ];
     }
 }

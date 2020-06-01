@@ -4,6 +4,8 @@ namespace Blog;
 
 use Zend\Router\Http\Segment;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Zend\Router\Http\Literal;
+
 // use Zend\Form\View\Helper\FormElementErrors;
 // use Zend\ServiceManager\Factory\InvokableFactory;
 // use Blog\Factories\FormElementsErrorsFactory;
@@ -20,6 +22,16 @@ return [
     ],
     'router' => [
         'routes' => [
+            'rest' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/rest/blog',
+                    'defaults' => [
+                        'controller' => Controller\BlogController::class,
+                        'action'     => 'rest-admin',
+                    ],
+                ],
+            ],
             'blog' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -64,7 +76,11 @@ return [
         'template_path_stack' => [
             'blog' => __DIR__ .'/../view', 
         ],
+        'strategies' => [
+            'ViewJsonStrategy'
+        ]
     ],
+    
     'doctrine' => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
