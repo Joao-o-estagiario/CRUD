@@ -215,19 +215,24 @@ class BlogController extends AbstractActionController
   }
 
   public function restAdminAction() {
+    $id = $this->params()->fromRoute('id');
+
     $posts = $this->entityManager->getRepository(Post::class)
-    ->findBy([], ['dateCreated' => 'DESC']);
+    ->findOneById($id);
 
-    $retorno = array_map(function($post){return $post->toArray();},$posts);
+    $retorno = $this->exibeDados($posts);
 
-  /*  $retorno = array_map(fn($post) => $post->toArray(),$posts);
-
-
+    /*  $retorno = array_map(fn($post) => $post->toArray(),$posts);
     $retorno = [];
     foreach ($posts as $post) {
       $retorno[] = $post->toArray();
     } */
 
     return new JsonModel($retorno);
+  }
+
+  public function exibeDados($post)
+  {
+    return $post->toArray();
   }
 }

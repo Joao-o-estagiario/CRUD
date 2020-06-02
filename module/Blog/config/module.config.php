@@ -23,22 +23,12 @@ return [
     'router' => [
         'routes' => [
             'rest' => [
-                'type'    => Literal::class,
+                'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/rest/blog',
+                    'route'    => '/rest/blog[/:action[/:id]]',
                     'defaults' => [
                         'controller' => Controller\BlogController::class,
                         'action'     => 'rest-admin',
-                    ],
-                ],
-            ],
-            'blog' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/blog[/:action]',
-                    'defaults' => [
-                        'controller' => Controller\BlogController::class,
-                        'action'     => 'admin',
                     ],
                 ],
             ],
